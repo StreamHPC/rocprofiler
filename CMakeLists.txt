@@ -33,6 +33,9 @@ set(ROCPROFILER_TARGET "${ROCPROFILER_NAME}64")
 set(ROCPROFILER_LIBRARY "lib${ROCPROFILER_TARGET}")
 project(rocprofiler VERSION 2.0.0)
 
+option(ROCPROFILER_BUILD_TESTING "Build rocprofiler tests" ${PROJECT_IS_TOP_LEVEL})
+option(ROCPROFILER_BUILD_EXAMPLE "Build rocprofiler examples" ON)
+
 include(GNUInstallDirs)
 
 # set default ROCM_PATH
@@ -161,11 +164,13 @@ endif()
 add_subdirectory(src)
 
 if(${LIBRARY_TYPE} STREQUAL SHARED)
-  # Build samples
-  add_subdirectory(samples)
+  if(ROCPROFILER_BUILD_EXAMPLE)
+    add_subdirectory(samples)
+  endif()
 
-  # Build tests
-  add_subdirectory(tests)
+  if(ROCPROFILER_BUILD_TESTING)
+    add_subdirectory(tests)
+  endif()
 endif()
 
 # Build Plugins
