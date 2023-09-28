@@ -53,7 +53,7 @@ add_compile_options(-Wall)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 # Adding default path cmake modules
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 # Set build environment
 include(utils)
 include(env)
