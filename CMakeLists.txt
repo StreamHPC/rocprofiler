@@ -33,6 +33,7 @@ set(ROCPROFILER_TARGET "${ROCPROFILER_NAME}64")
 set(ROCPROFILER_LIBRARY "lib${ROCPROFILER_TARGET}")
 project(rocprofiler VERSION 2.0.0)
 
+option(ROCPROFILER_BUILD_PLUGINS "Build rocprofiler plugins" ON)
 option(ROCPROFILER_BUILD_TESTING "Build rocprofiler tests" ${PROJECT_IS_TOP_LEVEL})
 option(ROCPROFILER_BUILD_EXAMPLE "Build rocprofiler examples" ON)
 
@@ -174,7 +175,9 @@ if(${LIBRARY_TYPE} STREQUAL SHARED)
 endif()
 
 # Build Plugins
-add_subdirectory(plugin)
+if(ROCPROFILER_BUILD_PLUGINS)
+  add_subdirectory(plugin)
+endif()
 
 # Build tests
 if(ROCPROFILER_BUILD_TESTING)
