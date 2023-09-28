@@ -177,7 +177,9 @@ endif()
 add_subdirectory(plugin)
 
 # Build tests
-add_subdirectory(${TEST_DIR} ${PROJECT_BINARY_DIR}/test)
+if(ROCPROFILER_BUILD_TESTING)
+  add_subdirectory(${TEST_DIR} ${PROJECT_BINARY_DIR}/test)
+endif()
 
 # Installation and packaging
 set(DEST_NAME ${ROCPROFILER_NAME})
