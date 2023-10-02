@@ -59,6 +59,9 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 include(utils)
 include(env)
 
+# Handle dependencies
+include(Dependencies)
+
 # Setup the package version.
 get_version("1.0.0")
 message("-- LIB-VERSION: ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
