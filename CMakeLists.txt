@@ -36,6 +36,7 @@ project(rocprofiler VERSION 2.0.0)
 option(ROCPROFILER_BUILD_PLUGINS "Build rocprofiler plugins" ON)
 option(ROCPROFILER_BUILD_TESTING "Build rocprofiler tests" ${PROJECT_IS_TOP_LEVEL})
 option(ROCPROFILER_BUILD_EXAMPLE "Build rocprofiler examples" ON)
+option(ROCPROFILER_BUILD_DOCS "Build rocprofiler documentation" ON)
 
 include(GNUInstallDirs)
 
@@ -182,6 +183,10 @@ endif()
 # Build tests
 if(ROCPROFILER_BUILD_TESTING)
   add_subdirectory(${TEST_DIR} ${PROJECT_BINARY_DIR}/test)
+endif()
+
+if(ROCPROFILER_BUILD_DOCS)
+  add_subdirectory(doc)
 endif()
 
 # Installation and packaging
