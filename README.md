@@ -33,14 +33,12 @@ $ export CMAKE_PREFIX_PATH=<path to hsa-runtime includes>:<path to hsa-runtime l
 $ export CMAKE_BUILD_TYPE=<debug|release> # release by default
 $ export CMAKE_DEBUG_TRACE=1 # 1 to enable debug tracing
 ```
+[ROCmCMakeBuildTools](https://github.com/RadeonOpenCompute/rocm-cmake) & [rocm-docs-core](https://github.com/RadeonOpenCompute/rocm-docs-core) (transitively Doxygen & Sphinx) need to be installed to build the documentation. With the exception of Doxygen and Python itself, all dependencies can be automatically fetched by the build. To opt-in to fetching Python dependencies, add `-D Python_FIND_VIRTUALENV=ON` without providing a Python virtualenv.
+
 To build with the current installed ROCM:
  ```bash
-$ cd .../rocprofiler
-$ export CMAKE_PREFIX_PATH=/opt/rocm/include/hsa:/opt/rocm
-$ mkdir build
-$ cd build
-$ cmake ..
-$ make
+$ cmake -D CMAKE_PREFIX_PATH="/opt/rocm/include/hsa;/opt/rocm" -S .../rocprofiler -B .../rocprofiler/build
+$ cmake --build ./rocprofiler/build --parallel `nproc`
 ```
 To run the test:
 ```bash
