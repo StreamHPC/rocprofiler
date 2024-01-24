@@ -163,6 +163,7 @@ def gen_cppheader(infilepath, outfilepath, rank):
         '#define INC_' + apiname + '_OSTREAM_OPS_H_\n' + \
         '\n' + \
         '#include "src/core/session/tracer/src/roctracer.h"\n' + \
+        '#include <hip/hip_deprecated.h>\n' + \
         '\n' + \
         '#ifdef __cplusplus\n' + \
         '#include <iostream>\n' + \
@@ -187,6 +188,10 @@ def gen_cppheader(infilepath, outfilepath, rank):
         if c in structs_analyzed:
             continue
         if c == 'max_align_t' or c == '__fsid_t': # Skipping as it is defined in multiple domains
+          continue
+        if c == 'hip_api_data_t': # error: use of overloaded operator '<<' is ambiguous,
+                                  # note: candidate function /usr/lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/ostream:189
+                                  #    operator<<(int __n);
           continue
         if len(cppHeader.classes[c]["properties"]["public"]) != 0:
           output_filename_h.write("inline static std::ostream& operator<<(std::ostream& out, const " + c + "& v)\n")

@@ -141,7 +141,7 @@ if(NOT DEFINED LIBRARY_TYPE)
 endif()
 
 # Enable tracing API
-if(NOT USE_PROF_API)
+if(NOT DEFINED USE_PROF_API)
   set(USE_PROF_API 1)
 endif()
 

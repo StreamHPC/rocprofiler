@@ -1,29 +1,6 @@
 # ############################################################################################################################################
 # ROCProfiler General Requirements
 # ############################################################################################################################################
-find_package(Python3 COMPONENTS Interpreter REQUIRED)
-
-execute_process(COMMAND ${Python3_EXECUTABLE} -c "import lxml"
-  RESULT_VARIABLE CPP_HEADER_PARSER
-  OUTPUT_QUIET)
-
-if(NOT ${CPP_HEADER_PARSER} EQUAL 0)
-  message(FATAL_ERROR "\
-The \"lxml\" Python3 package is not installed. \
-Please install it using the following command: \"${Python3_EXECUTABLE} -m pip install lxml\".\
-")
-endif()
-
-execute_process(COMMAND ${Python3_EXECUTABLE} -c "import CppHeaderParser"
-  RESULT_VARIABLE CPP_HEADER_PARSER
-  OUTPUT_QUIET)
-
-if(NOT ${CPP_HEADER_PARSER} EQUAL 0)
-  message(FATAL_ERROR "\
-The \"CppHeaderParser\" Python3 package is not installed. \
-Please install it using the following command: \"${Python3_EXECUTABLE} -m pip install CppHeaderParser\".\
-")
-endif()
 
 # Setting Default Binary output directory
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
@@ -111,8 +88,12 @@ find_file(HIP_RUNTIME_API_H hip_runtime_api.h
 ## Generate the HIP pretty printers
 add_custom_command(
   OUTPUT hip_ostream_ops.h
-  COMMAND ${CMAKE_C_COMPILER} "$<$<BOOL:${HIP_INCLUDE_DIRECTORIES}>:-I$<JOIN:${HIP_INCLUDE_DIRECTORIES},$<SEMICOLON>-I>>"
-  -E "${HIP_RUNTIME_API_H}" -D__HIP_PLATFORM_HCC__=1 -D__HIP_ROCclr__=1 -o hip_runtime_api.h.i
+  COMMAND ${CMAKE_C_COMPILER}
+    $<$<BOOL:${HIP_INCLUDE_DIRECTORIES}>:-I$<JOIN:${HIP_INCLUDE_DIRECTORIES},$<SEMICOLON>-I>>
+    -D$<JOIN:$<TARGET_PROPERTY:hip::host,INTERFACE_COMPILE_DEFINITIONS>,$<SEMICOLON>-D>
+    $<$<BOOL:${USE_PROF_API}>:-DUSE_PROF_API=1>
+    -E "${HIP_RUNTIME_API_H}"
+    -o hip_runtime_api.h.i
   BYPRODUCTS hip_runtime_api.h.i
   COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/script/gen_ostream_ops.py
   -in hip_runtime_api.h.i -out hip_ostream_ops.h > /dev/null
@@ -204,7 +185,8 @@ target_include_directories(${ROCPROFILER_TARGET}
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/rocprofiler>
   PRIVATE
   ${LIB_DIR} ${ROOT_DIR}
-  ${PROJECT_SOURCE_DIR}/include/rocprofiler)
+  ${PROJECT_SOURCE_DIR}/include/rocprofiler
+  ${PROF_API_HEADER_DIR})
 target_link_libraries(${ROCPROFILER_TARGET} PRIVATE ${AQLPROFILE_LIB} hsa-runtime64::hsa-runtime64 c stdc++)
 ## Install libraries: Non versioned lib file in dev package
 # install ( TARGETS ${ROCPROFILER_TARGET} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT dev NAMELINK_COMPONENT runtime)

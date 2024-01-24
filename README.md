@@ -29,6 +29,11 @@ The library source tree:
 
 Roctracer & Rocprofiler need to be installed in the same directory.
 ```bash
+# hipcc is needed, because hip-config.cmake installed by hip-dev won't succeed without it
+# rocm-device-libs is needed, because hip-config-amd.cmake installed by hip-dev won't succeed without it
+# hip-runtime-amd is needed, because hip-config-amd.cmake installed by hip-dev won't succeed without it (misses hip-targets.cmake)
+$ apt install libhsa-runtime-dev/hsa-rocr hsakmt-roct-dev hsa-amd-aqlprofile comgr hip-dev hipcc rocm-device-libs hip-runtime-amd libpciaccess-dev
+$ apt install python3 python3-pip graphviz
 $ export CMAKE_PREFIX_PATH=<path to hsa-runtime includes>:<path to hsa-runtime library>
 $ export CMAKE_BUILD_TYPE=<debug|release> # release by default
 $ export CMAKE_DEBUG_TRACE=1 # 1 to enable debug tracing

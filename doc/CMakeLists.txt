@@ -6,6 +6,7 @@ configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
 
 file(COPY
   "${CMAKE_CURRENT_SOURCE_DIR}/index.md"
+  "${CMAKE_CURRENT_SOURCE_DIR}/conf.py"
   DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 
 # rocm-docs-core will learn to create the folder of the external toc
